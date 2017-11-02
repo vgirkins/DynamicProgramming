@@ -13,7 +13,7 @@ int x[] = { 20, 80, 20, 60, 20, 60, 80, 10, 40, 10 };
 int s[] = { 100, 90, 50, 45, 40, 35, 20, 15, 10, 5 };
 // For convenience, a seperate variable denoting the number of days.
 const int n = 10;
-
+// Stores the partial result to differentiate between days.
 int partialDayPoints;
 
 /**
@@ -88,7 +88,7 @@ int OptData(int k, int optDataTable[2][n + 1], int partial) {
 
 int main() {
 
-    partialDayPoints = size(x);
+    partialDayPoints = size(x) - 1;
     // The columns of this table are days. Day 1 is at index 1. Index 0 included to represent
     // the fact that we reboot our system before beginning.
     // The first row of this table is the most data you can process given you rebooted on day i
