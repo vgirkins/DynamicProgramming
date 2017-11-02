@@ -19,7 +19,7 @@ using namespace std;
 // The ith entry of x is the amount of data that will be available
 // for processing on day (i + 1). Note zero-indexed array but one-indexed
 // days, hence all of the x[j - 1] instead of x[j] later in the code.
-int x[] = { 2, 60, 3, 5, 1 };
+int x[] = { 10, 1, 7, 7 };
 
 // might change from type array to vectors?
 // could do dynamic array but I figured vectors would be easier to work with
@@ -28,19 +28,19 @@ vector<int> x1;
 // The ith entry of s is the maximum amount of data we will be able
 // to process i days after a reboot. Note again discrepancy in indexing.
 // No data may be processed the day of a reboot.
-int s[] = { 100, 5, 4, 3, 2 };
+int s[] = { 8, 4, 2, 1 };
 
 vector<int> s1;
 
 //int x[] = { 20, 80, 20, 60, 20, 60, 80, 10, 40, 10 };
-// The ith entry of s is the maximum amount of data we will be able
-// to process i days after a reboot. Note again discrepancy in indexing.
-// No data may be processed the day of a reboot.
+
 //int s[] = { 100, 90, 50, 45, 40, 35, 20, 15, 10, 5 };
-// For convenience, a seperate variable denoting the number of days.
-const int n = 10;
+
 // Stores the partial result to differentiate between days.
 int partialDayPoints;
+
+// For convenience, a seperate variable denoting the number of days.
+const int n = size(x);
 
 /**
 * This function returns the maximum amount of data which can
@@ -145,22 +145,68 @@ void loadDaysInputs(string filename) {
         tempIndex++;
     }
 
+    // I was coding this late so I didn't want to change the array setup
+    // I tried but an error was thrown so I did this dumb round-about way to store the values
+    // Don't look at it, it's terrible..!
+    x[size(x1)];
+    s[size(s1)];
     for (unsigned int i = 0; i < x1.size(); ++i) {
+        x[i] = x1[i];
         cout << x1[i] << " ";
+        cout << x[i] << " ";
     }
     cout << endl;
 
     for (unsigned int i = 0; i < s1.size(); ++i) {
+        s[i] = s1[i];
+        cout << s1[i] << " ";
         cout << s1[i] << " ";
     }
     cout << endl;
-
 }
+
+/*
+* INCOMPLETE, my brain decided to fart on itself.. will try to finish tomorrow!!
+*/
+int* traceback(int indexRow[2][n + 1]) {
+    int rebootDays[n];
+    bool hasRebooted = false;
+    int rebootIndex = 0;
+
+    for (int i = 1; i < (n + 1); ++i) {
+        if (indexRow[1][i] != 0 && i != 1) {
+            
+        }
+        else {
+            /*if (x[i] < s[i]) {
+                rebootDays[i] = x[i];
+            }
+            else if (indexRow[1][i - 1] == 0) {
+                rebootIndex = 0;
+                rebootDays[i] = s[rebootIndex];
+            }
+            else {
+                rebootDays[i] = s[rebootIndex];
+            }*/
+        }
+   }
+
+    return rebootDays;
+}
+
+/*
+* TO DO: figure out what to do for n. If we don't want n to be "hardcoded"
+* and based on the size of the x from the input file, we have to find another
+* way to define the constant int n. I did this late after other hw so my brain
+* doesn't have enough energy for this at the moment... so n is left as is for now
+* 
+* 
+*/
 
 int main() {
     // opens the text file containing x and s values to read in
     loadDaysInputs("daysInput.txt");
-    
+
     partialDayPoints = size(x) - 1;
     // The columns of this table are days. Day 1 is at index 1. Index 0 included to represent
     // the fact that we reboot our system before beginning.
@@ -177,13 +223,13 @@ int main() {
 
     cout << OptData(0, table, partialDayPoints) << endl;
 
-    for (int i = 0; i < n + 1; i++) {
-        cout << table[0][i] << " ";
-    }
     cout << endl << endl;
     for (int i = 0; i < n + 1; i++) {
         cout << ((table[1][i] == NULL) ? "None" : to_string(table[1][i])) << " ";
     }
     cout << endl;
+
+    vector<int> rebootAnswers = traceback(table);
+
     return 0;
 }

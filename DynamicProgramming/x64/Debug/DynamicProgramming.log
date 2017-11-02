@@ -1,3 +1,6 @@
 ﻿  main.cpp
+c:\users\clara\documents\colorado school of mines\junior\algorithms\dp\dynamicprogramming\dynamicprogramming\main.cpp(43): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\clara\documents\colorado school of mines\junior\algorithms\dp\dynamicprogramming\dynamicprogramming\main.cpp(43): warning C4267: 'initializing': conversion from 'size_t' to 'const int', possible loss of data
+c:\users\clara\documents\colorado school of mines\junior\algorithms\dp\dynamicprogramming\dynamicprogramming\main.cpp(191): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   DynamicProgramming.vcxproj -> C:\Users\Clara\Documents\Colorado School of Mines\Junior\Algorithms\DP\DynamicProgramming\x64\Debug\DynamicProgramming.exe
   DynamicProgramming.vcxproj -> C:\Users\Clara\Documents\Colorado School of Mines\Junior\Algorithms\DP\DynamicProgramming\x64\Debug\DynamicProgramming.pdb (Partial PDB)
