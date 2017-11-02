@@ -1,4 +1,17 @@
+/*
+* CSCI406 Algorithms
+*
+* Project3: Dynamic Programming
+*
+* Authors:  Victoria (Tori) Girkins
+*           Stacia Near
+*           Clara Tran
+*/
+
 #include <iostream>
+#include <fstream>
+#include "sstream"
+#include <string>
 #include <queue>
 #include <string>
 using namespace std;
@@ -7,10 +20,18 @@ using namespace std;
 // for processing on day (i + 1). Note zero-indexed array but one-indexed
 // days, hence all of the x[j - 1] instead of x[j] later in the code.
 int x[] = { 2, 60, 3, 5, 1 };
+
+// might change from type array to vectors?
+// could do dynamic array but I figured vectors would be easier to work with
+vector<int> x1;
+
 // The ith entry of s is the maximum amount of data we will be able
 // to process i days after a reboot. Note again discrepancy in indexing.
 // No data may be processed the day of a reboot.
 int s[] = { 100, 5, 4, 3, 2 };
+
+vector<int> s1;
+
 // For convenience, a seperate variable denoting the number of days.
 const int n = 5;
 
@@ -81,8 +102,55 @@ int OptData(int k, int optDataTable[2][n + 1]) {
     }
 }
 
-int main() {
+void loadDaysInputs(string filename) {
+    ifstream daysInput;
+    daysInput.open(filename);
+    if (!daysInput) {
+        cerr << "Unable to open file!" << endl
+            << "Exiting now" << endl;
+        exit(1);
+    }
 
+    int tempIndex = 0;
+    string line;
+    getline(daysInput, line);
+    istringstream xInputs(line);
+
+    // ideally format of input file should be only two lines:
+    // first line containing the x values, second containing the s values
+    // first while loop will read in the x values and store it into the x vector appropriately
+    while (!xInputs.eof()) {
+        xInputs >> line;
+        x1.push_back(stoi(line));
+        tempIndex++;
+    }
+
+    // here is where the s inputs are being stored into the s vector
+    tempIndex = 0;
+    getline(daysInput, line);
+    istringstream sInputs(line);
+    while (!sInputs.eof()) {
+        sInputs >> line;
+        s1.push_back(stoi(line));
+        tempIndex++;
+    }
+
+    for (unsigned int i = 0; i < x1.size(); ++i) {
+        cout << x1[i] << " ";
+    }
+    cout << endl;
+
+    for (unsigned int i = 0; i < s1.size(); ++i) {
+        cout << s1[i] << " ";
+    }
+    cout << endl;
+
+}
+
+int main() {
+    // opens the text file containing x and s values to read in
+    loadDaysInputs("daysInput.txt");
+    
     // The columns of this table are days. Day 1 is at index 1. Index 0 included to represent
     // the fact that we reboot our system before beginning.
     // The first row of this table is the most data you can process given you rebooted on day i
