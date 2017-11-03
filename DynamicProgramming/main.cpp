@@ -19,7 +19,7 @@ using namespace std;
 // The ith entry of x is the amount of data that will be available
 // for processing on day (i + 1). Note zero-indexed array but one-indexed
 // days, hence all of the x[j - 1] instead of x[j] later in the code.
-int x[] = { 1, 2, 3, 4 };
+//int x[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 // might change from type array to vectors?
 // could do dynamic array but I figured vectors would be easier to work with
@@ -28,13 +28,13 @@ vector<int> x1;
 // The ith entry of s is the maximum amount of data we will be able
 // to process i days after a reboot. Note again discrepancy in indexing.
 // No data may be processed the day of a reboot.
-int s[] = { 1, 2, 3, 4 };
+//int s[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 vector<int> s1;
 
-//int x[] = { 20, 80, 20, 60, 20, 60, 80, 10, 40, 10 };
+int x[] = { 20, 80, 20, 60, 20, 60, 80, 10, 40, 10 };
 
-//int s[] = { 100, 90, 50, 45, 40, 35, 20, 15, 10, 5 };
+int s[] = { 100, 90, 50, 45, 40, 35, 20, 15, 10, 5 };
 
 // Stores the partial result to differentiate between days.
 int partialDayPoints;
@@ -115,6 +115,8 @@ int OptData(int k, int optDataTable[2][n + 1], int partial) {
 void loadDaysInputs(string filename) {
     ifstream daysInput;
     daysInput.open(filename);
+
+    //checking if file exists to open
     if (!daysInput) {
         cerr << "Unable to open file!" << endl
             << "Exiting now" << endl;
@@ -146,7 +148,8 @@ void loadDaysInputs(string filename) {
     }
 
     // I was coding this late so I didn't want to change the array setup
-    // I tried but an error was thrown so I did this dumb round-about way to store the values
+    // I tried to change it to a vector, but an error was thrown so I did 
+    // this dumb round-about way to store the values....
     // Don't look at it, it's terrible..!
     x[size(x1)];
     s[size(s1)];
@@ -161,10 +164,29 @@ void loadDaysInputs(string filename) {
         //cout << s1[i] << " ";
         //cout << s1[i] << " ";
     }
+
+    // Important to close input file!
+    daysInput.close();
+}
+
+void outputResults(int amountProcessed, vector<int> traceback) {
+    ofstream tbResults;
+    tbResults.open("DP_results.txt");
+
+    // amount of data processed is stored on first line
+    tbResults << amountProcessed << endl;
+
+    // amount of data processed each day is saved on the second
+    // line with a space in between
+    for (int tb : traceback) {
+        tbResults << tb << " ";
+    }
 }
 
 /*
-* INCOMPLETE, my brain decided to fart on itself.. will try to finish tomorrow!!
+* FINALLY GOT IT TO WORK.. MAYBE
+* Testing with other values
+* Will double check with group members
 */
 vector<int> traceback(int indexRow[2][n + 1]) {
     vector<int> rebootDays;
@@ -204,8 +226,6 @@ vector<int> traceback(int indexRow[2][n + 1]) {
 * and based on the size of the x from the input file, we have to find another
 * way to define the constant int n. I did this late after other hw so my brain
 * doesn't have enough energy for this at the moment... so n is left as is for now
-* 
-* 
 */
 
 int main() {
@@ -226,7 +246,8 @@ int main() {
     table[0][n - 1] = min(x[n - 1], s[0]);  // If reboot on second to last day, this is how much data you can process
     table[1][n - 1] = NULL;                 // Once you're on the second-to-last day you shouldn't reboot any more
 
-    cout << OptData(0, table, partialDayPoints) << endl;
+    int dataProcessed = OptData(0, table, partialDayPoints);
+    cout << dataProcessed << endl;
 
     for (int i = 0; i < n + 1; ++i) {
         cout << table[0][i] << " ";
@@ -238,9 +259,14 @@ int main() {
     cout << endl;
 
     vector<int> rebootAnswers = traceback(table);
+    // printing answers to make sure output function stores correct values
     for (int i = 0; i < rebootAnswers.size(); ++i) {
         cout << rebootAnswers.at(i) << " ";
     }
     cout << endl;
+
+    // calls function to output the results into a text file as part of requirements
+    outputResults(dataProcessed, rebootAnswers);
+
     return 0;
 }
