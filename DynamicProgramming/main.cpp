@@ -32,12 +32,10 @@ vector<int> x1;
 
 vector<int> s1;
 
+// Arrays from testing the function originally
 int x[] = { 20, 80, 20, 60, 20, 60, 80, 10, 40, 10 };
 
 int s[] = { 100, 90, 50, 45, 40, 35, 20, 15, 10, 5 };
-
-// Stores the partial result to differentiate between days.
-int partialDayPoints;
 
 // For convenience, a seperate variable denoting the number of days.
 const int n = size(x);
@@ -50,7 +48,7 @@ const int n = size(x);
 */
 // To keep indices straight, k is ALWAYS treated as the actual day we are on.
 // Adjust other indices as needed.
-int OptData(int k, int optDataTable[2][n + 1], int partial) {
+int OptData(int k, int optDataTable[2][n + 1]) {
     // The dynamic programming step
     if (optDataTable[0][k] != NULL) {
         return optDataTable[0][k];
@@ -60,7 +58,6 @@ int OptData(int k, int optDataTable[2][n + 1], int partial) {
         // to reboot tomorrow. We never reboot on the last day.
         int doReboot = min(x[n - 1], s[0]);
         int notReboot = min(x[n - 2], s[0]) + min(x[n - 1], s[1]);
-        partial++;
         if (doReboot > notReboot) {
             optDataTable[0][k] = doReboot;
             optDataTable[1][k] = k + 1;     // We decided to reboot tomorrow
@@ -81,13 +78,11 @@ int OptData(int k, int optDataTable[2][n + 1], int partial) {
             // Add up the data we process every day before the reboot
             for (int j = k + 1; j < i; j++) {
                 data += min(x[j - 1], s[j - k - 1]);
-                partial += k;
             }
             // Add on the data we process after the reboot (optimize)
-            data += OptData(i, optDataTable, partial);
+            data += OptData(i, optDataTable);
             // Check for a new max
             if (data > maxData) {
-                partial = 0;
                 maxData = data;
                 nextReboot = i;
             }
@@ -231,7 +226,6 @@ int main() {
     // opens the text file containing x and s values to read in
     loadDaysInputs("daysInput.txt");
 
-    partialDayPoints = size(x) - 1;
     // The columns of this table are days. Day 1 is at index 1. Index 0 included to represent
     // the fact that we reboot our system before beginning.
     // The first row of this table is the most data you can process given you rebooted on day i
@@ -245,7 +239,7 @@ int main() {
     table[0][n - 1] = min(x[n - 1], s[0]);  // If reboot on second to last day, this is how much data you can process
     table[1][n - 1] = NULL;                 // Once you're on the second-to-last day you shouldn't reboot any more
 
-    int dataProcessed = OptData(0, table, partialDayPoints);
+    int dataProcessed = OptData(0, table);
     cout << dataProcessed << endl;
     /*
     for (int i = 0; i < n + 1; ++i) {
