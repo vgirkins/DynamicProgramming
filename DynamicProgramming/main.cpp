@@ -19,7 +19,7 @@ using namespace std;
 // The ith entry of x is the amount of data that will be available
 // for processing on day (i + 1). Note zero-indexed array but one-indexed
 // days, hence all of the x[j - 1] instead of x[j] later in the code.
-int x[] = { 10, 1, 7, 7 };
+int x[] = { 1, 2, 3, 4 };
 
 // might change from type array to vectors?
 // could do dynamic array but I figured vectors would be easier to work with
@@ -28,7 +28,7 @@ vector<int> x1;
 // The ith entry of s is the maximum amount of data we will be able
 // to process i days after a reboot. Note again discrepancy in indexing.
 // No data may be processed the day of a reboot.
-int s[] = { 8, 4, 2, 1 };
+int s[] = { 1, 2, 3, 4 };
 
 vector<int> s1;
 
@@ -152,42 +152,47 @@ void loadDaysInputs(string filename) {
     s[size(s1)];
     for (unsigned int i = 0; i < x1.size(); ++i) {
         x[i] = x1[i];
-        cout << x1[i] << " ";
-        cout << x[i] << " ";
+        //cout << x1[i] << " ";
+        //cout << x[i] << " ";
     }
-    cout << endl;
 
     for (unsigned int i = 0; i < s1.size(); ++i) {
         s[i] = s1[i];
-        cout << s1[i] << " ";
-        cout << s1[i] << " ";
+        //cout << s1[i] << " ";
+        //cout << s1[i] << " ";
     }
-    cout << endl;
 }
 
 /*
 * INCOMPLETE, my brain decided to fart on itself.. will try to finish tomorrow!!
 */
-int* traceback(int indexRow[2][n + 1]) {
-    int rebootDays[n];
+vector<int> traceback(int indexRow[2][n + 1]) {
+    vector<int> rebootDays;
     bool hasRebooted = false;
-    int rebootIndex = 0;
+    int sIndex = 0;
+    int tableIndex = 0;
 
-    for (int i = 1; i < (n + 1); ++i) {
-        if (indexRow[1][i] != 0 && i != 1) {
-            
+    for (int i = 0; i < size(x); ++i) {
+        // i + 1 is taking into account that days start on day 1
+        if ((i + 1) != indexRow[1][tableIndex]) {
+            if (x[i] < s[sIndex]) {
+                rebootDays.push_back(x[i]);
+                sIndex++;
+            }
+            else if (s[sIndex] < x[i]) {
+                rebootDays.push_back(s[sIndex]);
+                sIndex++;
+            }
+            // condition when x and s values are equal
+            else {
+                rebootDays.push_back(x[i]);
+            }
         }
         else {
-            /*if (x[i] < s[i]) {
-                rebootDays[i] = x[i];
-            }
-            else if (indexRow[1][i - 1] == 0) {
-                rebootIndex = 0;
-                rebootDays[i] = s[rebootIndex];
-            }
-            else {
-                rebootDays[i] = s[rebootIndex];
-            }*/
+            // resets sIndex to start back to "day 1" for s
+            sIndex = 0;
+            tableIndex++;
+            rebootDays.push_back(0);
         }
    }
 
@@ -223,6 +228,9 @@ int main() {
 
     cout << OptData(0, table, partialDayPoints) << endl;
 
+    for (int i = 0; i < n + 1; ++i) {
+        cout << table[0][i] << " ";
+    }
     cout << endl << endl;
     for (int i = 0; i < n + 1; i++) {
         cout << ((table[1][i] == NULL) ? "None" : to_string(table[1][i])) << " ";
@@ -230,6 +238,9 @@ int main() {
     cout << endl;
 
     vector<int> rebootAnswers = traceback(table);
-
+    for (int i = 0; i < rebootAnswers.size(); ++i) {
+        cout << rebootAnswers.at(i) << " ";
+    }
+    cout << endl;
     return 0;
 }
