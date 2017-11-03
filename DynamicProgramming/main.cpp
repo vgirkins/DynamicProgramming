@@ -93,7 +93,6 @@ int OptData(int k, int optDataTable[2][n + 1], int partial) {
             }
         }
         // We may be better off not rebooting any more. Try this case.
-        // TODO could code this in at the beginning somehow with an "if"
         
         int noReboot = 0;
         // The amount of data we'll process is a simple sum of minimums.
@@ -248,7 +247,7 @@ int main() {
 
     int dataProcessed = OptData(0, table, partialDayPoints);
     cout << dataProcessed << endl;
-
+    /*
     for (int i = 0; i < n + 1; ++i) {
         cout << table[0][i] << " ";
     }
@@ -257,7 +256,7 @@ int main() {
         cout << ((table[1][i] == NULL) ? "None" : to_string(table[1][i])) << " ";
     }
     cout << endl;
-
+    */
     vector<int> rebootAnswers = traceback(table);
     // printing answers to make sure output function stores correct values
     for (int i = 0; i < rebootAnswers.size(); ++i) {

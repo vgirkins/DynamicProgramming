@@ -1,3 +1,7 @@
 ./classpath
 ./project
-/Debug
+**/Debug/*
+DynamicProgramming.sln
+DynamicProgramming.VC.db
+*.suo
+*.opendb
