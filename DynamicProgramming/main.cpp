@@ -33,6 +33,9 @@ vector<int> x1;
 vector<int> s1;
 
 // Arrays from testing the function originally
+// FOR CODE TO WORK these must be same size as arrays in input
+// file because traceback code is dependent on the way OptData
+// was written and didn't have time to fix it.
 int x[] = { 20, 80, 20, 60, 20, 60, 80, 10, 40, 10 };
 
 int s[] = { 100, 90, 50, 45, 40, 35, 20, 15, 10, 5 };
@@ -224,7 +227,7 @@ vector<int> traceback(int indexRow[2][n + 1]) {
 
 int main() {
     // opens the text file containing x and s values to read in
-    loadDaysInputs("daysInput.txt");
+    loadDaysInputs("testDaysInput.txt");
 
     // The columns of this table are days. Day 1 is at index 1. Index 0 included to represent
     // the fact that we reboot our system before beginning.
