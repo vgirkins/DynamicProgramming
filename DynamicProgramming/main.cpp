@@ -227,7 +227,7 @@ vector<int> traceback(int indexRow[2][n + 1]) {
 
 int main() {
     // opens the text file containing x and s values to read in
-    loadDaysInputs("testDaysInput.txt");
+    loadDaysInputs("daysInput.txt");
 
     // The columns of this table are days. Day 1 is at index 1. Index 0 included to represent
     // the fact that we reboot our system before beginning.
